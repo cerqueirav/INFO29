@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "utils.h"
 #define ERRO_OPCAO_INVALIDA -7
 #define ERRO_DATA_INVALIDA -6
@@ -61,7 +62,17 @@ int validarCpf(char cpfStr[]){
 }
 
 int validarData(char data[]){
-    // construir...
+    char sDia[3], sMes[3], sAno[5];
+    int iDia, iMes, iAno, indice=0;
+    
+    for (; data[indice] != '/'; indice++){     
+        sDia[indice] = data[indice++];
+    }
+    
+    sDia[indice] = '\0';
+    
+    
+    return SUCESSO_CADASTRO;
 }
 
 int validarNome(char nome[]){
@@ -86,16 +97,20 @@ int validarOpcao(int opcao){
         return ERRO_OPCAO_INVALIDA;
 }
 
-int validarSexo(char sexo){
-    sexo = toupper(sexo);
-    if ((sexo=='M') || (sexo=='F') || (sexo=='O'))
-        return SUCESSO_CADASTRO;
-    else
+int validarSexo(char sexo[]){
+    sexo[0] = toupper(sexo[0]);
+    int size = strlen(sexo);
+    if ((size < 1) || (size > 1))
         return ERRO_SEXO_INVALIDO;
     
+    if (size==1)
+        if ((sexo[0]=='F') || (sexo[0]=='M') || (sexo[0]=='O'))
+            return SUCESSO_CADASTRO;
+    
+    return ERRO_SEXO_INVALIDO;
 }
 
-void retornaFuncao(int opcao, int retorno){
+int retornaFuncao(int opcao, int retorno){
     switch(opcao){
         // Retorno da funcao "Cadastrar cliente"
         case 1:{

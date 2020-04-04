@@ -9,9 +9,9 @@
 #define FIM 3
 
 typedef struct client{
-    char nome[20];
-    char data_nasc[20];
-    char cpf[20];
+    char nome[22];
+    char data_nasc[12];
+    char cpf[16];
     char sexo;
     int status;
 }Cliente;
@@ -37,7 +37,7 @@ int main(){
 }
 
 void carregaFuncao(No **head, int opcao){
-    if (opcao!=ERRO_OPCAO_INVALIDA)
+    if (opcao!=ERRO_OPCAO_INVALIDA){
         switch(opcao){
             case 1:{
                 retornaFuncao(opcao, inserirClienteNoFinal(head)); break;
@@ -47,8 +47,10 @@ void carregaFuncao(No **head, int opcao){
                 listarCliente(*head); break;
             }
         }
-    else
+    }
+    else{
         printf("\nErro! Opcao invalida\n");
+    }
 }
 
 Cliente criarCliente(){
@@ -89,14 +91,19 @@ Cliente criarCliente(){
     }    
     
     // Sexo
+    char sexo[3];
     printf("-> Informe o Sexo : ");
-    cliente.sexo = writeUserInfoChar();
+    fgets(sexo, 3, stdin);
+    limparBuffer(sexo);
     
     // Validacao do Sexo
-    retorno = validarSexo(cliente.sexo);
+    retorno = validarSexo(sexo);
     if (retorno!=SUCESSO_CADASTRO){
         cliente.status = retorno;
         return cliente;
+    }
+    else{
+        cliente.sexo = sexo[0];
     }
     
     cliente.status = SUCESSO_CADASTRO; 
@@ -128,6 +135,7 @@ int inserirClienteNoFinal(No **head){
                 aux = aux->prox;
             }
             aux->prox = novo;
+            novo->prox = NULL;
         }
         return SUCESSO_CADASTRO;
     }
@@ -140,10 +148,10 @@ int inserirClienteNoFinal(No **head){
 
 void listarCliente(No *head){
     if (head==NULL)
-        printf("\nLista vazia!\n");
+        printf("A lista esta vazia\n");
     else{
         No *aux = head;
-        printf("\n# Clientes cadastrados [%d] #", qtdClientesNaLista(head));
+        printf("\n# Clientes cadastrados #");
         printf("\n_____\n");
         while(aux != NULL){
             printf("\n-> Nome: %s\n-> Data de nascimento: %s\n-> CPF: %s\n-> Sexo: %c\n",  
