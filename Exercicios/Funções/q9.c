@@ -30,8 +30,13 @@ int qtdClientesNaLista(No *head);
 
 int main(){
     No *head = NULL;
+    char data[12];
     
-    menuPrincipal(&head);
+    strcpy(data, "12/02/1998");
+    
+    int ret = validarData(data);
+    
+   // menuPrincipal(&head);
     
     return 0;
 }

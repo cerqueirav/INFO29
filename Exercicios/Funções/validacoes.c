@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "utils.h"
 #define ERRO_OPCAO_INVALIDA -7
@@ -63,14 +64,46 @@ int validarCpf(char cpfStr[]){
 
 int validarData(char data[]){
     char sDia[3], sMes[3], sAno[5];
-    int iDia, iMes, iAno, indice=0;
     
-    for (; data[indice] != '/'; indice++){     
-        sDia[indice] = data[indice++];
+    // Recort string to date (day)
+    int ind=0;
+    for (; data[ind] != '/'; ind++){
+        if (ind < 2){
+            sDia[ind] = data[ind];
+        }
     }
+    sDia[ind++] = '\0';
     
-    sDia[indice] = '\0';
+    // Recort string to date (Month)
+    int indAux=0;
+    for (; data[ind] != '/'; ind++, indAux++){
+        if (indAux < 2){
+            sMes[indAux] = data[ind];
+        }
+    }
+    sMes[indAux] = '\0';
+    ind++;
     
+    // Recort string to date (Year)
+    indAux=0;
+    
+    for (; ind<strlen(data); ind++, indAux++){
+        if (indAux < 4){
+            sAno[indAux] = data[ind];
+        }
+    }
+    sAno[indAux] = '\0';
+    
+    // Change date char to int
+    int iDia = atoi(sDia);
+    int iMes = atoi(sMes);
+    int iAno = atoi(sAno);
+    
+    // Print date converted to char
+    printf("Date char : %s/%s/%s\n", sDia, sMes, sAno);
+    
+    // Print date converted to int
+    printf("\nDate int : %d/%d/%d\n", iDia, iMes, iAno);
     
     return SUCESSO_CADASTRO;
 }
