@@ -32,9 +32,14 @@ int main(){
     No *head = NULL;
     char data[12];
     
-    strcpy(data, "12/02/1998");
+    strcpy(data, "1/2/2020");
     
     int ret = validarData(data);
+        
+    if (ret != SUCESSO_CADASTRO)
+        printf("Data invalida\n");
+    else
+        printf("Data valida\n");
     
    // menuPrincipal(&head);
     

@@ -2,6 +2,7 @@
 
 int validarCpf(char cpfInt[]);
 int validarData(char data[]);
+int validarDataEtapas(int dia, int mes, int ano);
 int validarNome(char nome[]);
 int validarOpcao(int opcao);
 int validarSexo(char sexo[]);

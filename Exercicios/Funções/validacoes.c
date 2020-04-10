@@ -62,34 +62,58 @@ int validarCpf(char cpfStr[]){
         return ERRO_CPF_INVALIDO;
 }
 
+int validarDataEtapas(int dia, int mes, int ano){
+    if ((dia < 0) || (mes < 0) || (ano < 0))
+        return ERRO_DATA_INVALIDA;
+    
+    if ((dia > 31) || (mes > 12))
+        return ERRO_DATA_INVALIDA;
+    
+    if ((ano < 10) || ((ano > 99) && (ano < 1000)))
+        return ERRO_DATA_INVALIDA;
+    
+    return SUCESSO_CADASTRO;
+}
+
 int validarData(char data[]){
     char sDia[3], sMes[3], sAno[5];
     
-    // Recort string to date (day)
-    int ind=0;
-    for (; data[ind] != '/'; ind++){
-        if (ind < 2){
-            sDia[ind] = data[ind];
-        }
+    // Validacao previa da data
+    int indice=0;
+    for(; indice < strlen(data); indice++){
+        if ((!isdigit(data[indice])) && (data[indice] != '/'))
+            return ERRO_DATA_INVALIDA;
     }
-    sDia[ind++] = '\0';
+    
+    // Recort string to date (Day)
+    indice=0;
+    for (; data[indice] != '/'; indice++){
+        if (indice < 2)
+            sDia[indice] = data[indice];
+        else
+            return ERRO_DATA_INVALIDA;
+    }
+    sDia[indice++] = '\0';
     
     // Recort string to date (Month)
     int indAux=0;
-    for (; data[ind] != '/'; ind++, indAux++){
+    for (; data[indice] != '/'; indice++, indAux++){
         if (indAux < 2){
-            sMes[indAux] = data[ind];
+            sMes[indAux] = data[indice];
+        }
+        else{
+            return ERRO_DATA_INVALIDA;
         }
     }
     sMes[indAux] = '\0';
-    ind++;
+    indice++;
     
     // Recort string to date (Year)
     indAux=0;
     
-    for (; ind<strlen(data); ind++, indAux++){
+    for (; indice<strlen(data); indice++, indAux++){
         if (indAux < 4){
-            sAno[indAux] = data[ind];
+            sAno[indAux] = data[indice];
         }
     }
     sAno[indAux] = '\0';
@@ -105,7 +129,15 @@ int validarData(char data[]){
     // Print date converted to int
     printf("\nDate int : %d/%d/%d\n", iDia, iMes, iAno);
     
+    int retorno = validarDataEtapas(iDia, iMes, iAno);
+    if (retorno==ERRO_DATA_INVALIDA)
+        return ERRO_DATA_INVALIDA;
+    
     return SUCESSO_CADASTRO;
+}
+
+int ehBissexto(int mes, int ano){
+    
 }
 
 int validarNome(char nome[]){
