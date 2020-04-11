@@ -1,5 +1,6 @@
 #include <string.h>
 
+int validacaoComplementarCpf(char cpfStr[], int size);
 int validarCpf(char cpfInt[]);
 int validarData(char data[]);
 int validarDataEtapas(int dia, int mes, int ano);

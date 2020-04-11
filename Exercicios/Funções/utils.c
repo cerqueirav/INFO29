@@ -18,6 +18,16 @@ int ehLetra(char letra){
     return 0;
 }
 
+int ehCaracterDeCpf(char caracter){
+    if ((caracter > 47) && (caracter < 58))
+        return 1;
+    
+    if ((caracter == 45) || (caracter == 46))
+        return 1;
+    
+    return 0;
+}
+
 int writeUserOption(){
     int op;
     printf("Informe a opcao: ");

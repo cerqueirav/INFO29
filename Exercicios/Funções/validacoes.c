@@ -11,7 +11,7 @@
 #define SUCESSO_CADASTRO 1
 #define FIM 3
 
-int validarCpf_Etapas(int cpfInt[], int n){
+int validacaoFinalCpf(int cpfInt[], int n){
     int indice=0, aux=n, digitV=0;
     // Realiza aritmetica (somatorio e produto)
     while (indice != n-1){
@@ -28,34 +28,93 @@ int validarCpf_Etapas(int cpfInt[], int n){
         return 0;
 }
 
+int validacaoComplementarCpf(char cpfStr[], int size){
+    int contPonto=0, contHifen=0;
+    // Cpf com caracteres especiais
+    if (size==14){
+        int indAux=0;
+        while (indAux < size){
+            if (ehCaracterDeCpf(cpfStr[indAux])){
+                if (cpfStr[indAux]=='.')
+                    contPonto++;
+                
+                if (cpfStr[indAux]=='-')
+                    contHifen++;
+                
+                indAux++;
+            }
+            else
+                return ERRO_CPF_INVALIDO;
+        }
+    
+        // Validacao complementar
+        if ((contPonto != 2) || (contHifen != 1))
+            return ERRO_CPF_INVALIDO;
+    }
+    // Cpf sem caracteres especiais
+    else if (size==11){
+        int indAux=0;
+        while (indAux < size){
+            if (isdigit(cpfStr[indAux]))
+                indAux++;
+            else
+                return ERRO_CPF_INVALIDO;
+        }
+    }
+    return SUCESSO_CADASTRO;
+}
+
 int validarCpf(char cpfStr[]){
+    int cpfInt[12], indice=0, pos=0;
     int size = strlen(cpfStr);
     
     // Verifica se o CPF está incompleto ou com numeros em excesso
-    if ((size < 11) || (size > 15))
+    if ((size != 11) && (size != 14))
         return ERRO_CPF_INVALIDO;
     
-    /* Transformar string com caracteres em vetor de int...
-    else if (size==15)
-        // construir...
-    */
+    // Validacao parcial (caracteres invalidos)
+    int retorno = validacaoComplementarCpf(cpfStr, size);
+    if (retorno==ERRO_CPF_INVALIDO)
+        return ERRO_CPF_INVALIDO;
     
-    // Caso o CPF seja inserido sem caracteres especiais '-' ou '.'
-    int cpfInt[16], indice=0;
-    
-    if (size==11)
+    // Cpf inserido no seguinte padrao -> 123.456.789-01
+    if (size==14){
+        // Convert nine cpf's digits to new char's vector
+        while (cpfStr[indice] != '-'){
+            if (cpfStr[indice] != '.')
+                cpfInt[pos++] = cpfStr[indice++] - 48;
+            else
+                indice++;
+        }
+        
+        // Encontra ambos digitos verificadores do CPF
+        indice++;
+        while(indice < size){
+            if (indice < size-1)
+                cpfInt[pos++] = cpfStr[indice++] - 48;
+            else
+                cpfInt[pos++] = cpfStr[indice++] - 48;
+        }
+    }
+        
+    // Cpf inserido sem caracteres especiais
+    indice = 0;
+    if (size==11){
         while (indice != 11){
             cpfInt[indice] = cpfStr[indice] - 48;
             indice++;
         }
+    }
         
-    // -> Processo de Validacao
-    int codVerificador[2], pos=0;
-    // Primeira etapa
+    //  Validacao final
+    int codVerificador[2]; pos=0;
+    
+    // Primeira etapa (Find DVs - Digitos Verificadores)
     while (pos < 2){
-        codVerificador[pos++] = validarCpf_Etapas(cpfInt, pos+10);
+        codVerificador[pos++] = validacaoFinalCpf(cpfInt, pos+10);
     }
     
+    // Ultima etapa (Compara ambos DVs com o do CPF informado)
     if ((codVerificador[0]==cpfInt[9]) && (codVerificador[1]==cpfInt[10]))
         return SUCESSO_CADASTRO;
     else
@@ -122,12 +181,6 @@ int validarData(char data[]){
     int iDia = atoi(sDia);
     int iMes = atoi(sMes);
     int iAno = atoi(sAno);
-    
-    // Print date converted to char
-    printf("Date char : %s/%s/%s\n", sDia, sMes, sAno);
-    
-    // Print date converted to int
-    printf("\nDate int : %d/%d/%d\n", iDia, iMes, iAno);
     
     int retorno = validarDataEtapas(iDia, iMes, iAno);
     if (retorno==ERRO_DATA_INVALIDA)

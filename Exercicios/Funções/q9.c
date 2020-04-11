@@ -30,18 +30,9 @@ int qtdClientesNaLista(No *head);
 
 int main(){
     No *head = NULL;
-    char data[12];
+    char cpf[15];
     
-    strcpy(data, "1/2/2020");
-    
-    int ret = validarData(data);
-        
-    if (ret != SUCESSO_CADASTRO)
-        printf("Data invalida\n");
-    else
-        printf("Data valida\n");
-    
-   // menuPrincipal(&head);
+    menuPrincipal(&head);
     
     return 0;
 }
@@ -74,7 +65,7 @@ Cliente criarCliente(){
     fgets(cliente.nome, 22, stdin);
     limparBuffer(cliente.nome);
     
-    // Validacao do Nome
+    // *Validacao do Nome
     retorno = validarNome(cliente.nome);
     if (retorno!=SUCESSO_CADASTRO){
         cliente.status = retorno;
@@ -86,14 +77,19 @@ Cliente criarCliente(){
     fgets(cliente.data_nasc, 12, stdin);
     limparBuffer(cliente.data_nasc);
     
-    // Criar validacao...
+    // *Validacao da Data de Nascimento
+    retorno = validarData(cliente.data_nasc);
+    if (retorno != SUCESSO_CADASTRO){
+        cliente.status = retorno;
+        return cliente;
+    }
     
     // CPF
     printf("-> Informe o CPF : ");
     fgets(cliente.cpf, 16, stdin);
     limparBuffer(cliente.cpf);
     
-    // Validacao do CPF
+    // *Validacao do CPF
     retorno = validarCpf(cliente.cpf);
     if (retorno!=SUCESSO_CADASTRO){
         cliente.status = retorno;
