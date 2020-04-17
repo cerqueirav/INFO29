@@ -63,7 +63,8 @@ int main(){
 
             case 2:{ //excluir
                 //TODO
-                
+                // int ret = excluirNumeroEspecificoDeEstrutura(writeUserInfoInt(), writeUserInfoPosicao());
+
                 break;
             }
 
@@ -87,16 +88,15 @@ int main(){
                         printf("-> Tamanho: [%d] | Elementos existentes: [%d]\n", size, qtd);
                         //imprimir para os dados para o usuário
                         int i = 0;
-                        for (; i < qtd; i++){
+                        for (; i < qtd; i++)
                             printf ("%d ", vetorAux[i]);
-                        }
                     }                        
                 }
                 break;
             }
             
             default:{
-                printf("opcao inválida\n");
+                printf("opcao invalida\n");
             }
 
             

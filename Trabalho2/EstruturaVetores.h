@@ -36,10 +36,9 @@ No* montarListaEncadeadaComCabecote();
 void getDadosListaEncadeadaComCabecote(No* inicio, int vetorAux[]);
 void destruirListaEncadeadaComCabecote(No** inicio);
 
-int ehPosicaoValida(int posicao); // OK
-int ehTamanhoValido(int tamanho); // OK
-int getTamanhoVetorAuxiliar(int posicao); // OK
+int buscarNumeroNaEstruturaAuxiliar(int valor, int posicao);
 int ehEstruturaAuxiliarVazia(int posicao); // OK
+int getTamanhoVetorAuxiliar(int posicao); // OK
 
 void inicializar();
 void finalizar();

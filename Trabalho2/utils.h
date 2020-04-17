@@ -1,11 +1,6 @@
-#include <string.h>
-#include <ctype.h>
-
-int ehCaracterDeCpf(char caracter);
-int ehLetra(char letra);
-void limparBuffer(char string[]);
-char writeUserInfoChar();
+void ajustarIndice(int *indice);
+void bubble_sort (int vetor[], int n);
+int ehPosicaoValida(int posicao); // OK
+int ehTamanhoValido(int tamanho); // OK
 int writeUserInfoInt();
 int writeUserInfoPosicao();
-int writeUserOption();
-

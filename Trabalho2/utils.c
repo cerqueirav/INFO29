@@ -3,44 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-void limparBuffer(char string[]){
-    size_t ln = strlen(string) - 1; //size_t = unsigned integer type
-    if (string[ln] == '\n')
-        string[ln] = '\0';
-}
-
-int ehLetra(char letra){
-    // Alfabeto de A-Z
-    letra = toupper(letra); // Upcase
-    if ((letra > 64) && (letra < 91) || (letra==32))
-        return 1;
-    
-    return 0;
-}
-
-int ehCaracterDeCpf(char caracter){
-    if ((caracter > 47) && (caracter < 58))
-        return 1;
-    
-    if ((caracter == 45) || (caracter == 46))
-        return 1;
-    
-    return 0;
-}
-
-int writeUserOption(){
-    int op;
-    printf("Informe a opcao: ");
-    scanf("%d", &op);
-    getchar();
-    return op;
-}
-
-char writeUserInfoChar(){
-    char info;
-    scanf("%c", &info);
-    return info;
-}
+#include "EstruturaVetores.h"
 
 int writeUserInfoInt(){
     int info;
@@ -54,4 +17,43 @@ int writeUserInfoPosicao(){
     printf("Informe a posicao : ");
     scanf("%i", &pos);
     return pos;
+}
+
+// se posição é um valor válido {entre 1 e 10}
+int ehPosicaoValida(int posicao){
+    int retorno = 0;
+    
+    if ((posicao < 1) || (posicao > 10))
+        retorno = POSICAO_INVALIDA;
+    else 
+        retorno = SUCESSO;
+
+    return retorno;
+}
+
+int ehTamanhoValido(int tamanho){
+    int retorno;
+    if (tamanho < 1) 
+        retorno = TAMANHO_INVALIDO; 
+    else retorno = SUCESSO;
+    
+    return retorno;
+}
+
+void bubble_sort (int vetor[], int n) {
+    int k, j, aux;
+
+    for (k = 1; k < n; k++) {
+        for (j = 0; j < n - 1; j++) {
+            if (vetor[j] > vetor[j + 1]) {
+                aux          = vetor[j];
+                vetor[j]     = vetor[j + 1];
+                vetor[j + 1] = aux;
+            }
+        }
+    }
+}
+
+void ajustarIndice(int *indice){
+    *indice--;
 }
