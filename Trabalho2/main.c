@@ -14,6 +14,8 @@ int menu(){
     printf("1 - Inserir\n");
     printf("2 - Excluir\n");
     printf("3 - Listar uma estrutura\n");
+    printf("4 - Montar Lista Encadeada\n");
+    printf("5 - Numero total de elementos\n");
     scanf("%d", &op);
     return op;
 }
@@ -38,33 +40,67 @@ int main(){
                 int valor = writeUserInfoInt();
                 int posicao = writeUserInfoPosicao();
                 
-                ret = inserirNumeroEmEstrutura(valor, posicao);
-                if (ret == SUCESSO){
-                    printf("\nInserido com sucesso\n");
-                }else if (ret == SEM_ESPACO){
-                    printf("\nSem Espaco\n");
-                }else if (ret == SEM_ESTRUTURA_AUXILIAR){
-                    int tam;
-                    printf("\nSem estrutura Auxiliar, informe o tamanho da estrutura : ");
-                    scanf("%d", &tam);
-                    // Cria nova estrutura auxiliar
-                    criarEstruturaAuxiliar(tam, posicao);
-                    
-                    // Insere elemento
+                if (validarPosicao(posicao)){
                     ret = inserirNumeroEmEstrutura(valor, posicao);
-                    if (ret==SUCESSO)
-                        printf("Inserido com sucesso\n");
-                    else
-                        printf("Sem espaco\n");
-                    
+                    if (ret == SUCESSO){
+                        printf("\n** Inserido com sucesso\n");
+                    }else if (ret == SEM_ESPACO){
+                        printf("\n* Sem espaco\n");
+                    }else if (ret == SEM_ESTRUTURA_AUXILIAR){
+                        int tam;
+                        printf("\n* Sem estrutura Auxiliar!\n-> Informe o tamanho: ");
+                        scanf("%d", &tam);
+                        // Cria nova estrutura auxiliar
+                        criarEstruturaAuxiliar(tam, posicao);
+                        
+                        // Insere elemento
+                        ret = inserirNumeroEmEstrutura(valor, posicao);
+                        if (ret==SUCESSO)
+                            printf("\n** Inserido com sucesso\n");
+                        else
+                            printf("\n* Sem espaco\n");
+                        
+                    }
                 }
+                else
+                    printf("\n* Posicao invalida\n");
+                
                 break;
             }
 
             case 2:{ //excluir
-                //TODO
-                // int ret = excluirNumeroEspecificoDeEstrutura(writeUserInfoInt(), writeUserInfoPosicao());
-
+                int posicao, valor, retorno=0;
+                printf("\n-> Informe a posicao : ");
+                scanf("%d", &posicao);
+                
+                printf("\n-> Informe o valor a ser excluido : ");
+                scanf("%d", &valor);
+                
+                retorno = excluirNumeroEspecificoDeEstrutura(valor, posicao);
+                if (retorno==SUCESSO)
+                    printf("** Elemento excluido com sucesso!\n");
+                else{
+                    retorno = excluirNumeroDoFinaldaEstrutura(posicao);
+                    if (retorno==SUCESSO)
+                        printf("** Elemento excluido com sucesso!\n");
+                    else{
+                        // Erros
+                        switch(retorno){
+                            // Erros 
+                            case POSICAO_INVALIDA:{
+                                printf("Posicao invalida\n"); break;
+                            }
+                            
+                            case ESTRUTURA_AUXILIAR_VAZIA:{
+                                printf("Estrutura vazia\n"); break;
+                            }
+                            
+                            case SEM_ESTRUTURA_AUXILIAR:{
+                                printf("Sem estrutura auxiliar\n"); break;
+                            }
+                        }
+                    }
+                }
                 break;
             }
 
@@ -75,9 +111,23 @@ int main(){
                 
                 int qtd =  getQuantidadeElementosEstruturaAuxiliar(posicao);
                 
-                if (qtd == POSICAO_INVALIDA){
-                    printf ("Posicao invalida\n");
-                }else{ // existe elemento
+                if (qtd < 1){
+                    switch(qtd){
+                        // Erros 
+                        case POSICAO_INVALIDA:{
+                            printf("Posicao invalida\n"); break;
+                        }
+                        
+                        case ESTRUTURA_AUXILIAR_VAZIA:{
+                            printf("Estrutura vazia\n"); break;
+                        }
+                        
+                        case SEM_ESTRUTURA_AUXILIAR:{
+                            printf("Sem estrutura auxiliar\n"); break;
+                        }
+                    }
+                }
+                else{ // existe elemento
                     int vetorAux[qtd], size;
                     
                     size = getTamanhoVetorAuxiliar(posicao);
@@ -85,18 +135,58 @@ int main(){
                     retorno = getDadosEstruturaAuxiliar(posicao, vetorAux);
                     
                     if (retorno == SUCESSO){
-                        printf("-> Tamanho: [%d] | Elementos existentes: [%d]\n", size, qtd);
                         //imprimir para os dados para o usuário
                         int i = 0;
-                        for (; i < qtd; i++)
-                            printf ("%d ", vetorAux[i]);
+                        for (; i < qtd; i++){
+                            // Formatacao da impressao
+                            if (qtd==1)
+                                printf ("\n-> Elementos da estrutura : {%d}\n", vetorAux[i]);
+                            else{
+                                if (i==0)
+                                    printf ("\n-> Elementos da estrutura : {%d", vetorAux[i]);
+                                else if (i!=qtd-1)
+                                    printf(", %d", vetorAux[i]);
+                                else
+                                    printf(", %d}\n", vetorAux[i]);
+                            }
+                        }
+                        printf("\n-> Numero de elementos: [%d/%d]\n", qtd, size);
                     }                        
                 }
                 break;
             }
             
+            case 4:{
+                int qtd = numeroDeElementosTodasAuxiliares();
+                No *head = montarListaEncadeadaComCabecote();
+                
+                if ((qtd > 0) && (head!=NULL)){
+                    int vetorAux[qtd], indiceAux=0;
+    
+                    getDadosListaEncadeadaComCabecote(head, vetorAux);
+                    printf("\nSucesso! Lista montada!\n");
+                }
+                else{
+                    printf("\nErro! Nao eh possivel montar!\n");
+                }
+                
+                break;
+            }
+            
+            case 5:{
+                int retorno=0;
+                
+                retorno = numeroDeElementosTodasAuxiliares();
+                if (ret>0)
+                    printf("\n** Elementos cadastrados: %d\n", ret);
+                else
+                    printf("\n* Todas estruturas auxiliares estao vazias/nao existem\n");
+                    
+                break;
+            }
+            
             default:{
-                printf("opcao invalida\n");
+                printf("\n* Opcao invalida\n");
             }
 
             

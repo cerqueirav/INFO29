@@ -5,29 +5,15 @@
 
 #include "EstruturaVetores.h"
 
-int writeUserInfoInt(){
-    int info;
-    printf("Informe um valor : ");
-    scanf("%i", &info);
-    return info;
-}
-
-int writeUserInfoPosicao(){
-    int pos;
-    printf("Informe a posicao : ");
-    scanf("%i", &pos);
-    return pos;
-}
-
 // se posição é um valor válido {entre 1 e 10}
-int ehPosicaoValida(int posicao){
-    int retorno = 0;
+int validarPosicao(int posicao){
+    int retorno;
     
-    if ((posicao < 1) || (posicao > 10))
-        retorno = POSICAO_INVALIDA;
-    else 
-        retorno = SUCESSO;
-
+    if ((posicao >= 1) && (posicao <= 10))
+        retorno = 1;
+    else
+        retorno = 0;
+    
     return retorno;
 }
 
@@ -40,7 +26,7 @@ int ehTamanhoValido(int tamanho){
     return retorno;
 }
 
-void bubble_sort (int vetor[], int n) {
+void ordenarVetor(int vetor[], int n) {
     int k, j, aux;
 
     for (k = 1; k < n; k++) {
@@ -54,6 +40,16 @@ void bubble_sort (int vetor[], int n) {
     }
 }
 
-void ajustarIndice(int *indice){
-    *indice--;
+int writeUserInfoInt(){
+    int info;
+    printf("Informe um valor : ");
+    scanf("%i", &info);
+    return info;
+}
+
+int writeUserInfoPosicao(){
+    int pos;
+    printf("Informe a posicao : ");
+    scanf("%i", &pos);
+    return pos;
 }
